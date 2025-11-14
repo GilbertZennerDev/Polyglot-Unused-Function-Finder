@@ -5,16 +5,8 @@
 import sys
 from pathlib import Path
 
-def get_all_files_content():
-	filenames = Path('.' + '/').rglob('*.py')
-	content = ''
-	for filename in filenames:
-		try:
-			tmp = open(filename, 'r').read().splitlines()
-			content += "\n".join(tmp) + "\n"
-		except Exception as e: print(e); exit()
-	content = content.splitlines()
-	return [line for line in content if '#' not in line]
+def get_all_filenames():
+	return [str(name) for name in list(Path('.' + '/' + 'bla').rglob('*.py'))]
 
 def giveContent(filename):
 	try:
@@ -35,14 +27,21 @@ def giveFuncCalls(content):
 def giveUnusedFuncs(defs, func_calls):
 	return [func for func in defs if func not in func_calls]
 
-def findunusedfunctions(filename):
-	content = giveContent(filename)
-	#content = get_all_files_content()
+def combine_files(files):
+	combined = []
+	arr = [giveContent(file) for file in files]
+	for subarr in arr:
+		for part in subarr:
+			if len(part): combined.append(part)
+	return combined
+
+def find_unused_functions(content):
 	unused_funcs = giveUnusedFuncs(giveDefs(content), giveFuncCalls(content))
 	print("Unused Functions:", unused_funcs)
 
 if __name__ == "__main__":
-	ac = len(sys.argv)
-	if ac > 1:
-		for i in range(1, ac): findunusedfunctions(sys.argv[i])
-	else: print('Give files in args'); exit()
+	#print(get_all_filenames())
+	find_unused_functions(combine_files(get_all_filenames()))
+	#ac = len(sys.argv)
+	#if ac > 1: find_unused_functions(combine_files(sys.argv[1:]))
+	#else: print('Give files in args'); exit()
