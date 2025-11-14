@@ -5,8 +5,8 @@
 import sys
 from pathlib import Path
 
-def get_all_filenames():
-	return [str(name) for name in list(Path('.' + '/' + 'bla').rglob('*.py'))]
+def get_all_filenames(folder):
+	return [str(name) for name in list(Path(folder).rglob('*.py'))]
 
 def giveContent(filename):
 	try:
@@ -41,5 +41,5 @@ def find_unused_functions(content):
 
 if __name__ == "__main__":
 	ac = len(sys.argv)
-	if ac < 2: find_unused_functions(combine_files(get_all_filenames())); exit()
+	if ac == 3 and sys.argv[1] == '-f': find_unused_functions(combine_files(get_all_filenames(sys.argv[2]))); exit()
 	find_unused_functions(combine_files(sys.argv[1:]))
