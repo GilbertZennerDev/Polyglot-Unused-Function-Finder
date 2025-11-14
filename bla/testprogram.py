@@ -10,3 +10,7 @@ def bla1():
 
 good()
 good()
+
+good(bad())
+good(bad(bad()))
+good(bad(bad(bad(blatest(bla1())))))

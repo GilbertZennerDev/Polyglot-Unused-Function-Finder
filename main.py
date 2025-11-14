@@ -20,9 +20,20 @@ def giveDefs(content):
 	defs = [line.split()[1] for line in content if 'def ' in line]
 	return [part[:part.index('(')] for part in defs]
 
+def get_all_func_calls(line):
+	pass
+	#good(good(goood()))
+
+#need to improve the code for bla(bla(bla()))
 def giveFuncCalls(content):
 	if content == None: return []
-	return [line[:line.index('(')] for line in content if '(' in line and 'def' not in line]
+	all_func_calls = []
+	for line in content:
+		while '(' in line:
+			func_call = line[:line.find('(')]
+			line = line[line.find('(') + 1 :]
+			all_func_calls.append(func_call)
+	return all_func_calls
 
 def giveUnusedFuncs(defs, func_calls):
 	return [func for func in defs if func not in func_calls]
@@ -38,6 +49,7 @@ def combine_files(files):
 def find_unused_functions(content):
 	unused_funcs = giveUnusedFuncs(giveDefs(content), giveFuncCalls(content))
 	print("Unused Functions:", unused_funcs)
+	return unused_funcs
 
 if __name__ == "__main__":
 	ac = len(sys.argv)
