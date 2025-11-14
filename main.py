@@ -18,11 +18,8 @@ def giveContent(filename):
 def giveDefs(content):
 	if content == None: return []
 	defs = [line.split()[1] for line in content if 'def ' in line]
+	defs = [line for line in defs if '(' in line]
 	return [part[:part.index('(')] for part in defs]
-
-def get_all_func_calls(line):
-	pass
-	#good(good(goood()))
 
 #need to improve the code for bla(bla(bla()))
 def giveFuncCalls(content):
@@ -42,7 +39,9 @@ def combine_files(files):
 	combined = []
 	arr = [giveContent(file) for file in files]
 	for subarr in arr:
+		if subarr == None: continue
 		for part in subarr:
+			if part == None: continue
 			if len(part): combined.append(part)
 	return combined
 
